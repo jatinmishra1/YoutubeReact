@@ -17,4 +17,15 @@ const VideoCard=({infos,key})=>{
        
     )
 }
+//Higher order component -it is the function which receives the component and return the component
+//we can take the example of youtube Add video box like something ...that is for some special data it is doing something differnt 
+//i.e modifyinh the component
+//Read from documentation
+export const  Addcard=({info})=>{
+return(
+    <div className='p-1 m-1 border border-red-900'>
+        <VideoCard infos={info}/>
+    </div>
+)
+}
 export default VideoCard

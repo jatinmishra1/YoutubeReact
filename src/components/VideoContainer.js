@@ -2,7 +2,7 @@
 import react, { useEffect, useState } from 'react'
 import { YOUTUBE_VIDEO_API, data_youtube } from '../utils/constant'
 import { Link } from 'react-router-dom'
-import VideoCard from './VideCard'
+import VideoCard, { Addcard } from './VideCard'
 // import { data_youtube } from '../utils/constant'
 const VideoContainer=()=>{
 // const sapna={
@@ -28,10 +28,11 @@ const VideoContainer=()=>{
     
     return ( 
         <div className='flex flex-wrap'>
+            { videos[1] && <Addcard info={videos[1]}/>}
              {
                 videos.map((video)=>{ 
                     return (
-                        <Link to={"/watch?v="+video.id}>
+                        <Link key={video.id} to={"/watch?v="+video.id}>
                          <VideoCard infos={video} key={video.id}/>
                     </Link>
                     )
@@ -39,6 +40,7 @@ const VideoContainer=()=>{
                    
                 })
              }
+             
              
         </div>
     )

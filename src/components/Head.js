@@ -1,9 +1,46 @@
-import react from 'react'
-import { useDispatch } from 'react-redux'
+import react, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { toggleMenu } from '../utils/appSlice';
+import { useState } from 'react';
+import { YOUTUBE_SEARCH_API } from '../utils/constant';
+import {cacheResults} from "../utils/searchSlice"
 
 const Head=()=>{
+    const [searchQuery,setSearchQuery]=useState("");
+    const [suggestions,setSuggestions]=useState([])
+    const [ShowSuggestions,setShowSuggestions]=useState(false)
+    const searchCache=useSelector(store=>store.search)
     
+    useEffect(()=>{
+        //API Call
+
+        //make an api call after every key press
+        //but if the difference between 2api calls is <200ms
+        //decline the api call
+        const timer=setTimeout(()=>{
+            if(searchCache[searchQuery]){
+                setSuggestions(searchCache[searchQuery])
+            }else{
+                getSearchSuggestion()
+            }
+            
+        },200)
+        return ()=>{
+            clearTimeout(timer)
+        }
+        
+    },[searchQuery])
+
+    const getSearchSuggestion=async()=>{
+const data=await fetch(YOUTUBE_SEARCH_API+searchQuery);
+const json=await data.json();
+setSuggestions(json[1])
+console.log(suggestions)
+dispatch(cacheResults({
+[searchQuery]:json[1]
+}))
+// console.log(json)
+    }
     const dispatch=useDispatch();
     const toggleMenuHandler=()=>{
         dispatch(toggleMenu())
@@ -15,10 +52,40 @@ const Head=()=>{
             <img className='h-9' alt="logo" src="https://img.freepik.com/premium-vector/red-youtube-logo-social-media-logo_197792-1803.jpg?w=2000"/>
         </div>
 
-        <div className='ml-15 flex col-span-10 px-12  '>
-            <input className='w-1/2 border border-gray-400 p-2 rounded-l-full' type='text'/>
+        <div className=' flex col-span-10 px-12  '>
+            {/* <div> */}
+            <input className='w-1/2 border border-gray-400 p-2 rounded-l-full' type='text' value={searchQuery} onChange={(e)=>{
+                setSearchQuery(e.target.value)
+            }}
+            onFocus={()=>{
+                setShowSuggestions(true)
+            }}
+            onBlur={()=>{
+                setShowSuggestions(false)
+            }}
+            />
             <button className=' border border-gray-400 p-2 rounded-r-full'> searchBar
             </button>
+            {/* </div> */}
+           { ShowSuggestions && <div className='fixed my-10 mx-2 bg-white py-12 px-5 w-[34rem] shadow-lg rounded-lg border border-gray-200'>
+                <ul>
+                    {/* <li className='py-2 shadow-sm hover:bg-gray-100'>Search iphone</li>
+                    <li className='py-2 shadow-sm hover:bg-gray-100'>Search iphone</li>
+                    <li className='py-2 shadow-sm hover:bg-gray-100'>Search iphone</li>
+                    <li className='py-2 shadow-sm hover:bg-gray-100'>Search iphone</li> */}
+                         {/* <li className='py-2 shadow-sm hover:bg-gray-100'>Search iphone</li> */}
+                    {
+                       
+                        suggestions.map((s)=>{
+                            return (
+                                <li key={s} className='py-2 shadow-sm hover:bg-gray-100'>{s}hindi</li>
+                            )
+                           
+                        })
+                    }
+                    
+                </ul>
+            </div>}
         </div>
 
         <div className='col-span-1'>
