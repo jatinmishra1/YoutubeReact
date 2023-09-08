@@ -3,6 +3,7 @@ const Google_Api_Key="AIzaSyDGQ3Z4kr3T9NkRFnj2z7Yd6R99zNsJtU0"
 export const YOUTUBE_VIDEO_API="https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=100&regionCode=IN&key="+Google_Api_Key;
 
 export const YOUTUBE_SEARCH_API="http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q="
+export const LIVE_CHAT_OFFSET=10
 
 // GET https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&myRating=like&key=[YOUR_API_KEY] HTTP/1.1
 
